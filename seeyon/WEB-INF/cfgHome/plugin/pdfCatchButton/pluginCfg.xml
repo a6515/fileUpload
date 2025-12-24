@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<plugin>
+    <!--id最重要 保证全局唯一-->
+    <id>pdfCatchButton</id>
+    <!--name仅仅是在从图片。log日志输出-->
+    <name>cs666666666</name>
+    <!--category无作用，避开标准的category即可-->
+    <category>20251110</category>
+</plugin>

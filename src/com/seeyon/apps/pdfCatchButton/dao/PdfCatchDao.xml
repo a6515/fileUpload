@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seeyon.apps.pdfCatchButton.dao.PdfCatchDao">
+
+    <select id="selectExistingIds" resultType="java.lang.String">
+        SELECT ${uniqueField}
+        FROM ${tableName}
+        WHERE ${uniqueField} IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectMainIdByYurref" resultType="java.lang.Long">
+        SELECT ID
+        FROM ${tableName}
+        WHERE field0042 = #{yurrefValue}
+            LIMIT 1
+    </select>
+
+    <update id="updateSubTableValue">
+        UPDATE ${subTableName}
+        SET field0038 = #{updateValue}
+        WHERE ID = #{mainId}
+          AND field0041 = #{matchValue}
+    </update>
+
+</mapper>
