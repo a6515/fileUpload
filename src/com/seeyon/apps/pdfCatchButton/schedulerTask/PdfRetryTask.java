@@ -1,10 +1,10 @@
 package com.seeyon.apps.pdfCatchButton.schedulerTask;
-
 import com.seeyon.apps.pdfCatchButton.AllInterFace._17ASYCALHD;
 import com.seeyon.apps.pdfCatchButton.AllInterFace._18DCTASKID;
 import com.seeyon.apps.pdfCatchButton.config.CmbConfig;
 import com.seeyon.apps.pdfCatchButton.service.PdfCatchService;
 import com.seeyon.apps.pdfCatchButton.utils.JsonParseUtil;
+import com.seeyon.ctp.common.AppContext;
 import com.seeyon.ctp.common.log.CtpLogFactory;
 import com.seeyon.ctp.organization.bo.V3xOrgMember;
 import com.seeyon.ctp.organization.manager.OrgManager;
@@ -37,15 +37,8 @@ public class PdfRetryTask {
     @Value("${${pdf.mode}.admin.login.name}")
     private String adminLoginName;
 
-    // [移除] 移除了 ZipProcessUtils
-    // @Autowired
-    // private ZipProcessUtils zipProcessUtils;
-
     @Autowired
     private PdfCatchService pdfCatchService;
-
-    @Autowired
-    private OrgManager orgManager;
 
     /**
      * 定时任务入口
@@ -90,6 +83,7 @@ public class PdfRetryTask {
 
     private void checkAdminExist() {
         try {
+            OrgManager orgManager = (OrgManager) AppContext.getBean("orgManager");
             V3xOrgMember member = orgManager.getMemberByLoginName(adminLoginName);
             if (member == null) {
                 LOGGER.warn("[环境自检警告] 未找到登录名为 '" + adminLoginName + "' 的用户！");

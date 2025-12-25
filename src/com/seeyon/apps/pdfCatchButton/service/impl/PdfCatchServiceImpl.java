@@ -337,7 +337,7 @@ public class PdfCatchServiceImpl implements PdfCatchService {
 
     // --- 保留原有的 updateSalaryStatus ---
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(value = "pdfTransactionManager", rollbackFor = Exception.class)
     public String updateSalaryStatus(String yurref, String matchName, Long targetValue, Long fileId) {
         // 1. 读取配置，确定表名
         if (salaryTableName == null || salarySubTableName == null) {

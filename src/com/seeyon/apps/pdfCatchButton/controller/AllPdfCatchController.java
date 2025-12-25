@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,9 +27,6 @@ import java.util.function.Consumer;
 
 @Controller
 public class AllPdfCatchController extends BaseController {
-    // 注入配置环境
-    @Value("${myRedis.password}")
-    private String redisPassword;
 
     private static final Log LOGGER = CtpLogFactory.getLog(AllPdfCatchController.class);
 
@@ -36,7 +35,7 @@ public class AllPdfCatchController extends BaseController {
 
     // 【新增】注入 Redis 模板
     // 注意：需要在 spring xml 中配置过 StringRedisTemplate，或者致远环境已有相关 Bean
-    @Autowired
+    @Resource(name = "pdfCatchStringRedisTemplate")
     private StringRedisTemplate stringRedisTemplate;
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(5);
@@ -133,6 +132,7 @@ public class AllPdfCatchController extends BaseController {
             // 【核心】写入 Redis 并重置过期时间
             // set(key, value, timeout, unit)
             stringRedisTemplate.opsForValue().set(key, json, EXPIRE_HOURS, TimeUnit.HOURS);
+            System.out.println("Redis 更新进度成功，taskId=" + taskId + ", progress=" + json);
             return true; // 写入成功
         } catch (Exception e) {
             // Redis 连接失败时记录错误日志
