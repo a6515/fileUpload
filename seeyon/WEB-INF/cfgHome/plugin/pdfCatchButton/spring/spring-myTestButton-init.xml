@@ -30,7 +30,7 @@
     <context:component-scan base-package="com.seeyon.apps.pdfCatchButton" />
 
 
-<!-- redis配置 -->
+    <!-- redis配置 -->
 
     <bean id="pdfCatchJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${myRedis.maxIdle}" />
@@ -40,10 +40,10 @@
     </bean>
 
     <bean id="pdfCatchJedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="hostName" value="${${current.mode}.myRedis.host}" />
-        <property name="port" value="${${current.mode}.myRedis.port}" />
-        <property name="password" value="${${current.mode}.myRedis.password}" />
-        <property name="timeout" value="${${current.mode}.myRedis.timeout}" />
+        <property name="hostName" value="${${current.redis.mode}.myRedis.host}" />
+        <property name="port" value="${${current.redis.mode}.myRedis.port}" />
+        <property name="password" value="${${current.redis.mode}.myRedis.password}" />
+        <property name="timeout" value="${${current.redis.mode}.myRedis.timeout}" />
 
         <property name="poolConfig" ref="pdfCatchJedisPoolConfig" />
         <property name="database" value="0" />
@@ -53,14 +53,14 @@
         <property name="connectionFactory" ref="pdfCatchJedisConnectionFactory" />
     </bean>
 
-<!-- redis配置 -->
+    <!-- redis配置 -->
 
-<!-- 数据源配置 -->
+    <!-- 数据源配置 -->
 
     <bean id="pdfCatchDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <property name="url" value="${${current.mode}.jdbc.url}" />
-        <property name="username" value="${${current.mode}.jdbc.username}" />
-        <property name="password" value="${${current.mode}.jdbc.password}" />
+        <property name="url" value="${${current.mysql.mode}.jdbc.url}" />
+        <property name="username" value="${${current.mysql.mode}.jdbc.username}" />
+        <property name="password" value="${${current.mysql.mode}.jdbc.password}" />
     </bean>
 
     <bean id="pdfSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -79,5 +79,5 @@
 
     <tx:annotation-driven transaction-manager="pdfTransactionManager" />
 
-<!-- 数据源配置 -->
+    <!-- 数据源配置 -->
 </beans>
